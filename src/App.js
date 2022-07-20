@@ -30,6 +30,7 @@ const locations = [
     icon: {
       url: "/comp.svg",
       scaledSize: new window.google.maps.Size(40, 40),
+      labelOrigin: new window.google.maps.Point(25, 50),
     },
   },
   {
@@ -39,6 +40,7 @@ const locations = [
     icon: {
       url: "/kite.svg",
       scaledSize: new window.google.maps.Size(40, 40),
+      labelOrigin: new window.google.maps.Point(25, 50),
     },
   },
   {
@@ -48,6 +50,7 @@ const locations = [
     icon: {
       url: "/kite.svg",
       scaledSize: new window.google.maps.Size(40, 40),
+      labelOrigin: new window.google.maps.Point(25, 50),
     },
   },
   {
@@ -57,6 +60,7 @@ const locations = [
     icon: {
       url: "/kite.svg",
       scaledSize: new window.google.maps.Size(40, 40),
+      labelOrigin: new window.google.maps.Point(25, 50),
     },
   },
   {
@@ -66,6 +70,7 @@ const locations = [
     icon: {
       url: "/kite.svg",
       scaledSize: new window.google.maps.Size(40, 40),
+      labelOrigin: new window.google.maps.Point(25, 50),
     },
   },
 ];
@@ -156,20 +161,11 @@ function App() {
             {locations.map((location, index) => {
               return (
                 <Marker
-                  labelStyle={{
-                    marginTop: "3rem",
-                    alignItems: "flex-start",
-                    // textAlign: "center",
-                    // width: labelSize.width + "px",
-                    backgroundColor: "#7fffd4",
-                    fontSize: "14px",
-                    // padding: labelPadding + "px",
-                  }}
                   key={index}
                   position={location.center}
                   label={{
                     text: location.label,
-                    color: "white",
+                    color: "red",
                     margin: "10rem",
                   }}
                   icon={location.icon}
