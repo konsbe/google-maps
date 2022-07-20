@@ -22,6 +22,33 @@ import {
 import { useRef, useState } from "react";
 
 const center = { lat: 48.8584, lng: 2.2945 };
+const locations = [
+  {
+    center: { lat: 37.98381, lng: 23.727539 },
+    label: "Athens",
+    description: "Down town",
+  },
+  {
+    center: { lng: 21.101621727218713, lat: 38.348038777977116 },
+    label: "NO WHERE",
+    description: "KiteSurfing in The midle of Nowhere",
+  },
+  {
+    center: { lat: 38.33961733175312, lng: 21.849048153815723 },
+    label: "Kitesurf",
+    description: "KiteSurfing in Drepano",
+  },
+  {
+    center: { lat: 37.038388552278946, lng: 25.10538126239318 },
+    label: "Paros",
+    description: "KiteSurfing in Paros",
+  },
+  {
+    center: { lat: 35.8828120698457, lng: 27.759616033718867 },
+    label: "Kitesurf",
+    description: "KiteSurfing in Prasonisi",
+  },
+];
 
 function App() {
   const { isLoaded } = useJsApiLoader({
@@ -34,6 +61,7 @@ function App() {
   const [distance, setDistance] = useState("");
   const [duration, setDuration] = useState("");
   const [selectedCenter, setSelectedCenter] = useState(null);
+  const [selectedMarker, setSelectedMarker] = useState(null);
 
   /** @type React.MutableRefObject<HTMLInputElement> */
   const originRef = useRef();
@@ -100,22 +128,32 @@ function App() {
                 position={selectedCenter}
               >
                 <div style={{ display: "flex", flexDirection: "column" }}>
-                  <h3>Title: A title</h3>
-                  <span>Description: A small description</span>
+                  <h3>Title: Title {selectedMarker.label}</h3>
+                  <span>Description: {selectedMarker.description}</span>
                 </div>
               </InfoWindow>
             )}
-            <Marker
-              position={center}
-              label="A label"
-              icon={{
-                url: "/comp.svg",
-                scaledSize: new window.google.maps.Size(40, 40),
-              }}
-              onClick={() => {
-                setSelectedCenter(center);
-              }}
-            />
+            {locations.map((location, index) => {
+              return (
+                <Marker
+                  key={index}
+                  position={location.center}
+                  label={location.label}
+                  icon={{
+                    url: "/comp.svg",
+                    scaledSize: new window.google.maps.Size(40, 40),
+                  }}
+                  onClick={() => {
+                    setSelectedCenter(location.center);
+                    setSelectedMarker({
+                      center: location.center,
+                      label: location.label,
+                      description: location.description,
+                    });
+                  }}
+                />
+              );
+            })}
             {directionsResponse && (
               <DirectionsRenderer directions={directionsResponse} />
             )}
@@ -177,13 +215,3 @@ function App() {
 }
 
 export default App;
-// export const InfoWindow = (): JSX.Element => {
-//   return (
-//     <>
-//       <div style={{ display: "flex", flexDirection: "column" }}>
-//         <h3>Title</h3>
-//         <span>Description</span>
-//       </div>
-//     </>
-//   );
-// };
