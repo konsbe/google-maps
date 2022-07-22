@@ -117,9 +117,39 @@ function App() {
     {
       center: { lat: 36.00858842593921, lng: -5.6065255744128875 },
       label: "Kitesurf",
-      description: "KiteSurfing in Prasonisi",
+      description: "KiteSurfing in Tarifa",
       icon: {
         url: "/kite.svg",
+        scaledSize: new window.google.maps.Size(40, 40),
+        labelOrigin: new window.google.maps.Point(25, 50),
+      },
+    },
+    {
+      center: { lat: 50.08029942598413, lng: 14.434032758775926 },
+      label: "Prague",
+      description: "Chilling DownTown",
+      icon: {
+        url: "/temple.svg",
+        scaledSize: new window.google.maps.Size(40, 40),
+        labelOrigin: new window.google.maps.Point(25, 50),
+      },
+    },
+    {
+      center: { lat: 48.86739277051393, lng: 2.783625174369861 },
+      label: "Disneyland",
+      description: "Play with Mki",
+      icon: {
+        url: "/temple.svg",
+        scaledSize: new window.google.maps.Size(40, 40),
+        labelOrigin: new window.google.maps.Point(25, 50),
+      },
+    },
+    {
+      center: { lat: 40.80526719492199, lng: 14.410203444054819 },
+      label: "Vesuvio",
+      description: "Beautifull  town of  Prasonisi",
+      icon: {
+        url: "/temple.svg",
         scaledSize: new window.google.maps.Size(40, 40),
         labelOrigin: new window.google.maps.Point(25, 50),
       },
