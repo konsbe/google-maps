@@ -1,4 +1,5 @@
 /* global google */
+import React from "react";
 import {
   Box,
   Button,
@@ -19,6 +20,7 @@ import {
   Autocomplete,
   DirectionsRenderer,
   InfoWindow,
+  Polygon,
 } from "@react-google-maps/api";
 import { useRef, useState } from "react";
 
@@ -29,7 +31,11 @@ function App() {
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries: ["places"],
   });
-
+  const [path, setPath] = useState([
+    { lat: 39.60313201801296, lng: 2.657888106161492 },
+    { lat: 43.274789776329186, lng: 5.404470016122906 },
+    { lat: 38.010862321844094, lng: 12.501637671463197 },
+  ]);
   const [map, setMap] = useState(/** @type google.maps.Map */ (null));
   const [directionsResponse, setDirectionsResponse] = useState(null);
   const [distance, setDistance] = useState("");
@@ -41,11 +47,41 @@ function App() {
   const originRef = useRef();
   /** @type React.MutableRefObject<HTMLInputElement> */
   const destiantionRef = useRef();
+  const polygonRef = useRef(null);
+  const listenersRef = useRef([]);
+  const onEdit = React.useCallback(() => {
+    if (polygonRef.current) {
+      const nextPath = polygonRef.current
+        .getPath()
+        .getArray()
+        .map((latLng) => {
+          return { lat: latLng.lat(), lng: latLng.lng() };
+        });
+      setPath(nextPath);
+    }
+  }, [setPath]);
+  const onLoad = React.useCallback(
+    (polygon) => {
+      polygonRef.current = polygon;
+      const path = polygon.getPath();
+      listenersRef.current.push(
+        path.addListener("set_at", onEdit),
+        path.addListener("insert_at", onEdit),
+        path.addListener("remove_at", onEdit)
+      );
+    },
+    [onEdit]
+  );
+
+  // Clean up refs
+  const onUnmount = React.useCallback(() => {
+    listenersRef.current.forEach((lis) => lis.remove());
+    polygonRef.current = null;
+  }, []);
 
   if (!isLoaded) {
     return <SkeletonText />;
   }
-
   async function calculateRoute() {
     if (originRef.current.value === "" || destiantionRef.current.value === "") {
       return;
@@ -226,6 +262,18 @@ function App() {
               <DirectionsRenderer directions={directionsResponse} />
             )}
           </div>
+          <Polygon
+            // Make the Polygon editable / draggable
+            editable
+            draggable
+            path={path}
+            // Event used when manipulating and adding points
+            onMouseUp={onEdit}
+            // Event used when dragging the whole Polygon
+            onDragEnd={onEdit}
+            onLoad={onLoad}
+            onUnmount={onUnmount}
+          />
         </GoogleMap>
       </Box>
       <Box
