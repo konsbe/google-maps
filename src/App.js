@@ -1,3 +1,4 @@
+/* global google */
 import {
   Box,
   Button,
@@ -22,58 +23,6 @@ import {
 import { useRef, useState } from "react";
 
 const center = { lat: 48.8584, lng: 2.2945 };
-const locations = [
-  {
-    center: { lat: 37.98381, lng: 23.727539 },
-    label: "Athens",
-    description: "Down town",
-    icon: {
-      url: "/comp.svg",
-      scaledSize: new window.google.maps.Size(40, 40),
-      labelOrigin: new window.google.maps.Point(25, 50),
-    },
-  },
-  {
-    center: { lng: 21.101621727218713, lat: 38.348038777977116 },
-    label: "NO WHERE",
-    description: "KiteSurfing in The midle of Nowhere",
-    icon: {
-      url: "/kite.svg",
-      scaledSize: new window.google.maps.Size(40, 40),
-      labelOrigin: new window.google.maps.Point(25, 50),
-    },
-  },
-  {
-    center: { lat: 38.33961733175312, lng: 21.849048153815723 },
-    label: "Kitesurf",
-    description: "KiteSurfing in Drepano",
-    icon: {
-      url: "/kite.svg",
-      scaledSize: new window.google.maps.Size(40, 40),
-      labelOrigin: new window.google.maps.Point(25, 50),
-    },
-  },
-  {
-    center: { lat: 37.038388552278946, lng: 25.10538126239318 },
-    label: "Paros",
-    description: "KiteSurfing in Paros",
-    icon: {
-      url: "/kite.svg",
-      scaledSize: new window.google.maps.Size(40, 40),
-      labelOrigin: new window.google.maps.Point(25, 50),
-    },
-  },
-  {
-    center: { lat: 35.8828120698457, lng: 27.759616033718867 },
-    label: "Kitesurf",
-    description: "KiteSurfing in Prasonisi",
-    icon: {
-      url: "/kite.svg",
-      scaledSize: new window.google.maps.Size(40, 40),
-      labelOrigin: new window.google.maps.Point(25, 50),
-    },
-  },
-];
 
 function App() {
   const { isLoaded } = useJsApiLoader({
@@ -113,6 +62,69 @@ function App() {
     setDistance(results.routes[0].legs[0].distance.text);
     setDuration(results.routes[0].legs[0].duration.text);
   }
+  const google = window.google;
+  const locations = [
+    {
+      center: { lat: 37.98381, lng: 23.727539 },
+      label: "Athens",
+      description: "Down town",
+      icon: {
+        url: "/temple.svg",
+        scaledSize: new window.google.maps.Size(40, 40),
+        labelOrigin: new window.google.maps.Point(25, 50),
+      },
+    },
+    {
+      center: { lng: 21.101621727218713, lat: 38.348038777977116 },
+      label: "NO WHERE",
+      description: "KiteSurfing in The midle of Nowhere",
+      icon: {
+        url: "/kite.svg",
+        scaledSize: new window.google.maps.Size(40, 40),
+        labelOrigin: new window.google.maps.Point(25, 50),
+      },
+    },
+    {
+      center: { lat: 38.33961733175312, lng: 21.849048153815723 },
+      label: "Kitesurf",
+      description: "KiteSurfing in Drepano",
+      icon: {
+        url: "/kite.svg",
+        scaledSize: new window.google.maps.Size(40, 40),
+        labelOrigin: new window.google.maps.Point(25, 50),
+      },
+    },
+    {
+      center: { lat: 37.038388552278946, lng: 25.10538126239318 },
+      label: "Paros",
+      description: "KiteSurfing in Paros",
+      icon: {
+        url: "/kite.svg",
+        scaledSize: new window.google.maps.Size(40, 40),
+        labelOrigin: new window.google.maps.Point(25, 50),
+      },
+    },
+    {
+      center: { lat: 35.8828120698457, lng: 27.759616033718867 },
+      label: "Kitesurf",
+      description: "KiteSurfing in Prasonisi",
+      icon: {
+        url: "/kite.svg",
+        scaledSize: new window.google.maps.Size(40, 40),
+        labelOrigin: new window.google.maps.Point(25, 50),
+      },
+    },
+    {
+      center: { lat: 36.00858842593921, lng: -5.6065255744128875 },
+      label: "Kitesurf",
+      description: "KiteSurfing in Prasonisi",
+      icon: {
+        url: "/kite.svg",
+        scaledSize: new window.google.maps.Size(40, 40),
+        labelOrigin: new window.google.maps.Point(25, 50),
+      },
+    },
+  ];
 
   function clearRoute() {
     setDirectionsResponse(null);
