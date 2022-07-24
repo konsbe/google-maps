@@ -99,6 +99,10 @@ function App() {
     setDuration(results.routes[0].legs[0].duration.text);
   }
   const google = window.google;
+  /**
+   * inital data must be use after we loading google maps.
+   * line 82-84 is where we know if google maps is loaded
+   */
   const locations = [
     {
       center: { lat: 37.98381, lng: 23.727539 },
