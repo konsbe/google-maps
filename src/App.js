@@ -54,6 +54,7 @@ function App() {
         .getPath()
         .getArray()
         .map((latLng) => {
+          console.log(latLng.lat());
           return { lat: latLng.lat(), lng: latLng.lng() };
         });
       setPath(nextPath);
@@ -190,6 +191,39 @@ function App() {
       },
     },
   ];
+  const polyCations = [
+    {
+      center: { lat: 39.60313201801296, lng: 2.657888106161492 },
+      label: "Cruisin",
+      description: "Cruisin",
+      icon: {
+        url: "/cruise.svg",
+        scaledSize: new window.google.maps.Size(40, 40),
+        labelOrigin: new window.google.maps.Point(25, 50),
+      },
+    },
+    {
+      center: { lat: 43.274789776329186, lng: 5.404470016122906 },
+
+      label: "Cruisin 2",
+      description: "KiteSurfing in The midle of Nowhere",
+      icon: {
+        url: "/cruise.svg",
+        scaledSize: new window.google.maps.Size(40, 40),
+        labelOrigin: new window.google.maps.Point(25, 50),
+      },
+    },
+    {
+      center: { lat: 38.010862321844094, lng: 12.501637671463197 },
+      label: "Cruisin 3",
+      description: "KiteSurfing in Drepano",
+      icon: {
+        url: "/cruise.svg",
+        scaledSize: new window.google.maps.Size(40, 40),
+        labelOrigin: new window.google.maps.Point(25, 50),
+      },
+    },
+  ];
 
   function clearRoute() {
     setDirectionsResponse(null);
@@ -236,6 +270,28 @@ function App() {
               </InfoWindow>
             )}
             {locations.map((location, index) => {
+              return (
+                <Marker
+                  key={index}
+                  position={location.center}
+                  label={{
+                    text: location.label,
+                    color: "red",
+                    margin: "10rem",
+                  }}
+                  icon={location.icon}
+                  onClick={() => {
+                    setSelectedCenter(location.center);
+                    setSelectedMarker({
+                      center: location.center,
+                      label: location.label,
+                      description: location.description,
+                    });
+                  }}
+                />
+              );
+            })}
+            {polyCations.map((location, index) => {
               return (
                 <Marker
                   key={index}
