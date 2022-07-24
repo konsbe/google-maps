@@ -1,4 +1,3 @@
-/* global google */
 import React from "react";
 import {
   Box,
@@ -40,8 +39,8 @@ function App() {
   const [directionsResponse, setDirectionsResponse] = useState(null);
   const [distance, setDistance] = useState("");
   const [duration, setDuration] = useState("");
-  const [selectedCenter, setSelectedCenter] = useState(null);
-  const [selectedMarker, setSelectedMarker] = useState(null);
+  const [selectedCenter, setSelectedCenter] = useState("");
+  const [selectedMarker, setSelectedMarker] = useState("");
 
   /** @type React.MutableRefObject<HTMLInputElement> */
   const originRef = useRef();
@@ -226,7 +225,7 @@ function App() {
             {selectedCenter && (
               <InfoWindow
                 onCloseClick={() => {
-                  setSelectedCenter(null);
+                  setSelectedCenter("");
                 }}
                 position={selectedCenter}
               >
