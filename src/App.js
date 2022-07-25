@@ -21,7 +21,7 @@ import {
   InfoWindow,
   Polygon,
 } from "@react-google-maps/api";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 const center = { lat: 48.8584, lng: 2.2945 };
 
@@ -41,7 +41,8 @@ function App() {
   const [duration, setDuration] = useState("");
   const [selectedCenter, setSelectedCenter] = useState("");
   const [selectedMarker, setSelectedMarker] = useState("");
-
+  const [polyData, setPolyData] = useState();
+  const [isDragIt, setIsDragIt] = useState(false);
   /** @type React.MutableRefObject<HTMLInputElement> */
   const originRef = useRef();
   /** @type React.MutableRefObject<HTMLInputElement> */
@@ -49,6 +50,7 @@ function App() {
   const polygonRef = useRef(null);
   const listenersRef = useRef([]);
   const onEdit = React.useCallback(() => {
+    setIsDragIt(true);
     if (polygonRef.current) {
       const nextPath = polygonRef.current
         .getPath()
@@ -59,7 +61,18 @@ function App() {
         });
       setPath(nextPath);
     }
+    setIsDragIt(false);
   }, [setPath]);
+  useEffect(() => {
+    if (isDragIt) {
+      !polyData && setPolyData(polyCations);
+      // polyData.map((data) => {
+
+      // })
+      console.log("polyData", polyData);
+    }
+    console.log("isDragIt", isDragIt);
+  }, [isDragIt]);
   const onLoad = React.useCallback(
     (polygon) => {
       polygonRef.current = polygon;
