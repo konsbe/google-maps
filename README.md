@@ -9,6 +9,11 @@
 5. Places Autocomplete
 6. Directions Service
 7. Directions Renderer on map
+8. Adjust Labels, Icons
+9. onClick & onHover Description
+10. Polygon Data
+11. Draggable items
+
 
 ## Starting the app
 
