@@ -35,5 +35,16 @@ npm install
 npm start
 ```
 ## Dependencies
-```npx create-react-app my-app```
-```npm i @react-google-maps/api```
+```npx create-react-app my-app```<br/>
+```npm i @react-google-maps/api```<br/>
+<br/>
+Go to https://console.cloud.google.com/projectselector2/apis/ create a project, then ENABLE APIS AND SERVICES => <br/>
+MAPS JAVASCRIPT API (enable) => <br/>
+Directions API and Places API
+<br/>
+<br/>
+Credentials => CREATE CREDENTIALS => API key
+
+
+
+
