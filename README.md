@@ -34,3 +34,6 @@ OR using npm
 npm install
 npm start
 ```
+## Dependencies
+```npx create-react-app my-app```
+```npm i @react-google-maps/api```
