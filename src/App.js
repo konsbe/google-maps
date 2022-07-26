@@ -20,8 +20,10 @@ import {
   DirectionsRenderer,
   InfoWindow,
   Polygon,
+  Polyline,
 } from "@react-google-maps/api";
 import { useRef, useState, useEffect } from "react";
+import { template } from "lodash";
 
 const center = { lat: 48.8584, lng: 2.2945 };
 
@@ -41,7 +43,7 @@ function App() {
   const [duration, setDuration] = useState("");
   const [selectedCenter, setSelectedCenter] = useState("");
   const [selectedMarker, setSelectedMarker] = useState("");
-  const [polyData, setPolyData] = useState();
+  const [polyData, setPolyData] = useState([]);
   const [isDragIt, setIsDragIt] = useState(false);
   /** @type React.MutableRefObject<HTMLInputElement> */
   const originRef = useRef();
@@ -49,14 +51,28 @@ function App() {
   const destiantionRef = useRef();
   const polygonRef = useRef(null);
   const listenersRef = useRef([]);
-  const onEdit = React.useCallback(() => {
+  const onEdit = React.useCallback(async () => {
     setIsDragIt(true);
     if (polygonRef.current) {
       const nextPath = polygonRef.current
         .getPath()
         .getArray()
-        .map((latLng) => {
-          console.log(latLng.lat());
+        .map((latLng, index) => {
+          setPolyData([
+            ...polyData,
+            (polyData[index] = {
+              id: index,
+              center: { lat: latLng.lat(), lng: latLng.lng() },
+              label: "Cruisin",
+              description: "Cruisin",
+              icon: {
+                url: "/cruise.svg",
+                scaledSize: new window.google.maps.Size(40, 40),
+                labelOrigin: new window.google.maps.Point(25, 50),
+              },
+            }),
+          ]);
+          // console.log(index, latLng.lat(), polyData);
           return { lat: latLng.lat(), lng: latLng.lng() };
         });
       setPath(nextPath);
@@ -64,15 +80,8 @@ function App() {
     setIsDragIt(false);
   }, [setPath]);
   useEffect(() => {
-    if (isDragIt) {
-      !polyData && setPolyData(polyCations);
-      // polyData.map((data) => {
-
-      // })
-      console.log("polyData", polyData);
-    }
-    console.log("isDragIt", isDragIt);
-  }, [isDragIt]);
+    setIsDragIt(!isDragIt);
+  }, [setPath]);
   const onLoad = React.useCallback(
     (polygon) => {
       polygonRef.current = polygon;
@@ -117,6 +126,46 @@ function App() {
    * line 82-84 is where we know if google maps is loaded
    */
   const locations = [
+    {
+      center: { lat: 45.44080968672815, lng: 12.318801501070041 },
+      label: "Cruisin",
+      description: "Cruisin",
+      icon: {
+        url: "/cruise.svg",
+        scaledSize: new window.google.maps.Size(40, 40),
+        labelOrigin: new window.google.maps.Point(25, 50),
+      },
+    },
+    {
+      center: { lat: 44.06920748037418, lng: 12.574017410846315 },
+      label: "Cruisin",
+      description: "Cruisin",
+      icon: {
+        url: "/cruise.svg",
+        scaledSize: new window.google.maps.Size(40, 40),
+        labelOrigin: new window.google.maps.Point(25, 50),
+      },
+    },
+    {
+      center: { lat: 44.11593107723636, lng: 15.241273879684629 },
+      label: "Cruisin",
+      description: "Cruisin",
+      icon: {
+        url: "/cruise.svg",
+        scaledSize: new window.google.maps.Size(40, 40),
+        labelOrigin: new window.google.maps.Point(25, 50),
+      },
+    },
+    {
+      center: { lat: 39.60313201801296, lng: 2.657888106161492 },
+      label: "Cruisin",
+      description: "Cruisin",
+      icon: {
+        url: "/cruise.svg",
+        scaledSize: new window.google.maps.Size(40, 40),
+        labelOrigin: new window.google.maps.Point(25, 50),
+      },
+    },
     {
       center: { lat: 37.98381, lng: 23.727539 },
       label: "Athens",
@@ -210,6 +259,7 @@ function App() {
   ];
   const polyCations = [
     {
+      id: 1,
       center: { lat: 39.60313201801296, lng: 2.657888106161492 },
       label: "Cruisin",
       description: "Cruisin",
@@ -220,6 +270,7 @@ function App() {
       },
     },
     {
+      id: 2,
       center: { lat: 43.274789776329186, lng: 5.404470016122906 },
 
       label: "Cruisin 2",
@@ -231,6 +282,7 @@ function App() {
       },
     },
     {
+      id: 3,
       center: { lat: 38.010862321844094, lng: 12.501637671463197 },
       label: "Cruisin 3",
       description: "KiteSurfing in Drepano",
@@ -241,7 +293,18 @@ function App() {
       },
     },
   ];
-
+  const pathCoordinates = [
+    { lat: 45.44080968672815, lng: 12.318801501070041 },
+    { lat: 44.922509710095376, lng: 12.595322341956535 },
+    { lat: 44.06920748037418, lng: 12.574017410846315 },
+    { lat: 43.56800320463442, lng: 13.927041623669941 },
+    { lat: 41.950152771293396, lng: 15.304009259856114 },
+    { lat: 42.03820886486767, lng: 16.237634529463275 },
+    { lat: 41.162035875532524, lng: 16.776335081716837 },
+    { lat: 42.37600255427242, lng: 18.69075399317574 },
+    { lat: 42.88947079035722, lng: 16.14179892300712 },
+    { lat: 44.11593107723636, lng: 15.241273879684629 },
+  ];
   function clearRoute() {
     setDirectionsResponse(null);
     setDistance("");
@@ -249,7 +312,11 @@ function App() {
     originRef.current.value = "";
     destiantionRef.current.value = "";
   }
-
+  const lineSymbol = {
+    path: "M 0,-1 0,1",
+    strokeOpacity: 1,
+    scale: 4,
+  };
   return (
     <Flex
       position="relative"
@@ -308,28 +375,51 @@ function App() {
                 />
               );
             })}
-            {polyCations.map((location, index) => {
-              return (
-                <Marker
-                  key={index}
-                  position={location.center}
-                  label={{
-                    text: location.label,
-                    color: "red",
-                    margin: "10rem",
-                  }}
-                  icon={location.icon}
-                  onClick={() => {
-                    setSelectedCenter(location.center);
-                    setSelectedMarker({
-                      center: location.center,
-                      label: location.label,
-                      description: location.description,
-                    });
-                  }}
-                />
-              );
-            })}
+            {isDragIt
+              ? polyCations.map((location, index) => {
+                  return (
+                    <Marker
+                      key={index}
+                      position={location.center}
+                      label={{
+                        text: location.label,
+                        color: "red",
+                        margin: "10rem",
+                      }}
+                      icon={location.icon}
+                      onClick={() => {
+                        setSelectedCenter(location.center);
+                        setSelectedMarker({
+                          center: location.center,
+                          label: location.label,
+                          description: location.description,
+                        });
+                      }}
+                    />
+                  );
+                })
+              : polyData.map((location, index) => {
+                  return (
+                    <Marker
+                      key={index}
+                      position={location.center}
+                      label={{
+                        text: location.label,
+                        color: "red",
+                        margin: "10rem",
+                      }}
+                      icon={location.icon}
+                      onClick={() => {
+                        setSelectedCenter(location.center);
+                        setSelectedMarker({
+                          center: location.center,
+                          label: location.label,
+                          description: location.description,
+                        });
+                      }}
+                    />
+                  );
+                })}
             {directionsResponse && (
               <DirectionsRenderer directions={directionsResponse} />
             )}
@@ -345,6 +435,23 @@ function App() {
             onDragEnd={onEdit}
             onLoad={onLoad}
             onUnmount={onUnmount}
+          />
+          <Polyline
+            path={pathCoordinates}
+            geodesic={true}
+            options={{
+              strokeColor: "#ff2527",
+              strokeOpacity: 0,
+              strokeWeight: 2,
+              // scale: 4,
+              icons: [
+                {
+                  icon: lineSymbol,
+                  offset: "0",
+                  repeat: "20px",
+                },
+              ],
+            }}
           />
         </GoogleMap>
       </Box>
